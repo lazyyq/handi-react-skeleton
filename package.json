@@ -11,10 +11,17 @@
   "dependencies": {
     "@react-router/node": "^7.7.0",
     "@react-router/serve": "^7.7.0",
+    "@tanstack/react-query": "^5.83.0",
+    "@types/react-router-dom": "^5.3.3",
+    "antd": "^5.26.6",
+    "axios": "^1.11.0",
+    "dayjs": "^1.11.13",
     "isbot": "^5.1.27",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-router": "^7.7.0"
+    "react-router": "^7.7.0",
+    "recharts": "^3.1.0",
+    "zustand": "^5.0.6"
   },
   "devDependencies": {
     "@react-router/dev": "^7.7.0",
