@@ -1,4 +1,4 @@
-import { UserRole, type User } from '../../domain/entities/User'
+import { UserRole, type User } from '../../domain/User'
 import type { UserResponseDto } from '../../infrastructure/dto/UserDto'
 
 /**

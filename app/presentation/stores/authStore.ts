@@ -1,8 +1,8 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { UserRole } from '../../domain/entities/User'
-import { UserService } from '../../application/services/UserService'
-import type { User, LoginCredentials, AuthState } from '../../domain/entities/User'
+import { UserRole } from '../../features/user/domain/User'
+import { UserService } from '../../features/user/application/services/UserService'
+import type { User, LoginCredentials, AuthState } from '../../features/user/domain/User'
 
 interface AuthStore extends AuthState {
   login: (credentials: LoginCredentials) => Promise<void>

@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { UserService } from '../services/UserService'
-import { UserRole } from '../../domain/entities/User'
+import { UserRole } from '../../domain/User'
 import type { CreateUserRequestDto, UpdateUserRequestDto } from '../../infrastructure/dto/UserDto'
 
 const userService = UserService.getInstance()

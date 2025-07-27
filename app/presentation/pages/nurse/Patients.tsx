@@ -4,9 +4,9 @@ import { SearchOutlined, UserOutlined } from '@ant-design/icons'
 import { AppLayout } from '../../components/templates/AppLayout'
 import { Card } from '../../components/atoms'
 import { PatientCard } from './components/PatientCard'
-import { usePatients } from '../../../application/hooks/usePatients'
+import { usePatients } from '../../../features/patient/application/hooks/usePatients'
 import { useAuthStore } from '../../stores/authStore'
-import type { Patient } from '../../../domain/entities/Patient'
+import type { Patient } from '../../../features/patient/domain/Patient'
 
 export default function Patients() {
   const [searchText, setSearchText] = useState('')

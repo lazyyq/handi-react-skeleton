@@ -2,7 +2,7 @@ import type {
   PatientResponseDto, 
   HealthRecordResponseDto, 
   ConsultationScheduleResponseDto 
-} from '../../infrastructure/dto/PatientDto'
+} from '../infrastructure/dto/PatientDto'
 
 export interface Patient {
   id: string

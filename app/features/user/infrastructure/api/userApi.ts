@@ -1,4 +1,4 @@
-import { httpClient } from './httpClient'
+import { httpClient } from '../../../../shared/infrastructure/api/httpClient'
 import type { 
   UserResponseDto,
   LoginRequestDto,

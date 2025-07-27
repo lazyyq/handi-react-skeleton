@@ -6,7 +6,7 @@ import type { Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
 import { AppLayout } from '../../components/templates/AppLayout'
 import { Card } from '../../components/atoms'
-import type { ConsultationSchedule } from '../../../domain/entities/Patient'
+import type { ConsultationSchedule } from '../../../features/patient/domain/Patient'
 
 // 목업 스케줄 데이터
 const mockSchedules: ConsultationSchedule[] = [

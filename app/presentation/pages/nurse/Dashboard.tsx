@@ -6,8 +6,8 @@ import { AppLayout } from '../../components/templates/AppLayout'
 import { Card } from '../../components/atoms'
 import { PatientCard } from './components/PatientCard'
 import { useAuthStore } from '../../stores/authStore'
-import { usePatients, usePatientStats } from '../../../application/hooks/usePatients'
-import type { Patient } from '../../../domain/entities/Patient'
+import { usePatients, usePatientStats } from '../../../features/patient/application/hooks/usePatients'
+import type { Patient } from '../../../features/patient/domain/Patient'
 
 const upcomingAppointments = [
   { time: '09:00', patient: '김환자', type: '정기 상담' },

@@ -2,11 +2,11 @@ import { Row, Col, Statistic, Table, Tag, Tabs, Spin } from 'antd'
 import { UserOutlined, TeamOutlined, HeartOutlined, CalendarOutlined } from '@ant-design/icons'
 import { AppLayout } from '../../components/templates/AppLayout'
 import { Card } from '../../components/atoms'
-import { useUsers } from '../../../application/hooks/useUsers'
-import { usePatients } from '../../../application/hooks/usePatients'
-import { UserRole } from '../../../domain/entities/User'
-import type { User } from '../../../domain/entities/User'
-import type { Patient } from '../../../domain/entities/Patient'
+import { useUsers } from '../../../features/user/application/hooks/useUsers'
+import { usePatients } from '../../../features/patient/application/hooks/usePatients'
+import { UserRole } from '../../../features/user/domain/User'
+import type { User } from '../../../features/user/domain/User'
+import type { Patient } from '../../../features/patient/domain/Patient'
 
 export default function AdminHospital() {
   // 훅을 사용하여 간호사와 환자 데이터 가져오기

@@ -1,6 +1,6 @@
 import { UserOutlined, PhoneOutlined, HomeOutlined } from '@ant-design/icons'
 import { Card } from '../../../components/atoms'
-import type { Patient } from '../../../../domain/entities/Patient'
+import type { Patient } from '../../../../features/patient/domain/Patient'
 
 interface PatientCardProps {
   patient: Patient

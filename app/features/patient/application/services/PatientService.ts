@@ -1,6 +1,6 @@
-import { httpClient } from '../../infrastructure/api/httpClient'
+import { httpClient } from '~/shared/infrastructure/api/httpClient'
 import { PatientMapper } from '../mappers/PatientMapper'
-import type { Patient, HealthRecord, ConsultationSchedule } from '../../domain/entities/Patient'
+import type { Patient, HealthRecord, ConsultationSchedule } from '../../domain/Patient'
 import type {
   PatientResponseDto,
   CreatePatientRequestDto,
@@ -56,7 +56,7 @@ export class PatientService {
       )
 
       return {
-        patients: response.data.data.map(dto => PatientMapper.toEntity(dto)),
+        patients: response.data.data.map((dto: PatientResponseDto) => PatientMapper.toEntity(dto)),
         total: response.data.total,
         page: response.data.page,
         totalPages: response.data.total_pages
@@ -215,7 +215,7 @@ export class PatientService {
         { params }
       )
       
-      return response.data.map(dto => PatientMapper.healthRecordToEntity(dto))
+      return response.data.map((dto: HealthRecordResponseDto) => PatientMapper.healthRecordToEntity(dto))
     } catch (error) {
       // API가 없는 경우 목업 데이터 반환
       console.warn('Health records API not available, using mock data')
@@ -314,7 +314,7 @@ export class PatientService {
       }
       
       const response = await httpClient.get<PatientResponseDto[]>(`${this.basePath}/search`, { params })
-      return response.data.map(dto => PatientMapper.toEntity(dto))
+      return response.data.map((dto: PatientResponseDto) => PatientMapper.toEntity(dto))
     } catch (error) {
       // getPatients 메서드의 검색 기능 활용
       const result = await this.getPatients({ search: query, nurseId })

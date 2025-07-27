@@ -4,8 +4,8 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 import { UserOutlined, PhoneOutlined, HomeOutlined, CalendarOutlined } from '@ant-design/icons'
 import { AppLayout } from '../../components/templates/AppLayout'
 import { Card, Button } from '../../components/atoms'
-import { usePatient, usePatientHealthRecords } from '../../../application/hooks/usePatients'
-import type { Patient, HealthRecord } from '../../../domain/entities/Patient'
+import { usePatient, usePatientHealthRecords } from '../../../features/patient/application/hooks/usePatients'
+import type { Patient, HealthRecord } from '../../../features/patient/domain/Patient'
 
 export default function PatientDetail() {
   const { id } = useParams()

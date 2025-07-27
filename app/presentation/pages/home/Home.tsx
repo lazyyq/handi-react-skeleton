@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router'
 import { useAuthStore } from '../../stores/authStore'
-import { UserRole } from '../../../domain/entities/User'
+import { UserRole } from '../../../features/user/domain/User'
 import { AppLayout } from '../../components/templates/AppLayout'
 import { Card, Button } from '../../components/atoms'
 

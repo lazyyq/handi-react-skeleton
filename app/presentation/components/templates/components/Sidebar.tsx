@@ -11,7 +11,7 @@ import {
 } from '@ant-design/icons'
 import type { MenuProps } from 'antd'
 import { useAuthStore } from '../../../stores/authStore'
-import { UserRole } from '../../../../domain/entities/User'
+import { UserRole } from '../../../../features/user/domain/User'
 
 const { Sider } = Layout
 

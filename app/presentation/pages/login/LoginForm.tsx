@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { Form, Select, message, Input as AntInput } from 'antd'
 import { Button } from '../../components/atoms'
-import { UserRole } from '../../../domain/entities/User'
-import type { LoginCredentials } from '../../../domain/entities/User'
+import { UserRole } from '../../../features/user/domain/User'
+import type { LoginCredentials } from '../../../features/user/domain/User'
 
 interface LoginFormProps {
   onSubmit: (credentials: LoginCredentials) => Promise<void>

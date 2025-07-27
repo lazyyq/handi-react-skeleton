@@ -1,5 +1,5 @@
-import { httpClient } from '../../infrastructure/api/httpClient'
-import { UserRole, type User } from '../../domain/entities/User'
+import { httpClient } from '~/shared/infrastructure/api/httpClient'
+import { UserRole, type User } from '../../domain/User'
 import { UserMapper } from '../mappers/UserMapper'
 import type { 
   UserResponseDto, 

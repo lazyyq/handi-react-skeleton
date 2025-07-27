@@ -1,4 +1,4 @@
-import type { UserResponseDto, LoginRequestDto } from '../../infrastructure/dto/UserDto'
+import type { UserResponseDto, LoginRequestDto } from '../infrastructure/dto/UserDto'
 
 export interface User {
   id: string

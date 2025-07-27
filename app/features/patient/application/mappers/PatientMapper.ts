@@ -1,4 +1,4 @@
-import type { Patient, HealthRecord, ConsultationSchedule } from '../../domain/entities/Patient'
+import type { Patient, HealthRecord, ConsultationSchedule } from '../../domain/Patient'
 import type { 
   PatientResponseDto, 
   HealthRecordResponseDto, 

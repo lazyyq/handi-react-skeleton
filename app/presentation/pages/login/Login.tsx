@@ -1,10 +1,10 @@
 import { Navigate } from 'react-router'
 import { message } from 'antd'
 import { useAuthStore } from '../../stores/authStore'
-import { UserRole } from '../../../domain/entities/User'
+import { UserRole } from '../../../features/user/domain/User'
 import { AppLayout } from '../../components/templates/AppLayout'
 import { LoginForm } from './LoginForm'
-import type { LoginCredentials } from '../../../domain/entities/User'
+import type { LoginCredentials } from '../../../features/user/domain/User'
 
 export default function Login() {
   const { isAuthenticated, user, login, isLoading } = useAuthStore()
