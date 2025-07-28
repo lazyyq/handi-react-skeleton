@@ -13,7 +13,7 @@ Handi 프로젝트의 아키텍처 설계 원칙과 구현 방법에 대한 가�
 
 ## 🏗 아키텍처 개요
 
-Handi 프로젝트는 **Clean Architecture**와 **Domain-Driven Design** 원칙을 기반으로 설계되었습니다.
+Handi 프로젝트는 **Layered Architecture**와 **Domain-Driven Design** 원칙을 기반으로 설계되었습니다.
 
 ### 핵심 원칙
 
