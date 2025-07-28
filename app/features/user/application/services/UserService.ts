@@ -1,13 +1,10 @@
-import { httpClient } from '~/shared/infrastructure/api/httpClient'
 import { UserRole, type User } from '../../domain/User'
 import { UserMapper } from '../mappers/UserMapper'
 import type { 
-  UserResponseDto, 
-  LoginRequestDto, 
-  LoginResponseDto,
   CreateUserRequestDto,
   UpdateUserRequestDto 
 } from '../../infrastructure/dto/UserDto'
+import { userApi } from '../../infrastructure/api/userApi'
 
 export class UserService {
   private readonly basePath = '/users'
@@ -35,14 +32,14 @@ export class UserService {
     refreshToken: string
   }> {
     try {
-      const loginRequest: LoginRequestDto = {
+      const loginRequest = {
         email,
         password,
         role
       }
 
-      const response = await httpClient.post<LoginResponseDto>('/auth/login', loginRequest)
-      const { user: userDto, access_token, refresh_token } = response.data
+      const response = await userApi.login(loginRequest)
+      const { user: userDto, access_token, refresh_token } = response
 
       // 토큰을 로컬 스토리지에 저장
       localStorage.setItem('access_token', access_token)
@@ -59,7 +56,7 @@ export class UserService {
       // API가 없는 경우 목업 데이터 반환
       console.warn('Login API not available, using mock data')
       
-      const mockUserDto: UserResponseDto = {
+      const mockUserDto: any = { // Assuming UserResponseDto is not directly imported here, so using 'any' for now
         id: `${role}-user-1`,
         name: role === UserRole.NURSE ? '김간호사' : '박관리자',
         email,
@@ -85,7 +82,7 @@ export class UserService {
    */
   async logout(): Promise<void> {
     try {
-      await httpClient.post('/auth/logout')
+      await userApi.logout()
     } catch (error) {
       console.warn('Logout API not available')
     } finally {
@@ -100,8 +97,8 @@ export class UserService {
    */
   async getCurrentUser(): Promise<User> {
     try {
-      const response = await httpClient.get<UserResponseDto>('/auth/me')
-      return UserMapper.toEntity(response.data)
+      const response = await userApi.getCurrentUser()
+      return UserMapper.toEntity(response)
     } catch (error) {
       throw new Error('Failed to get current user')
     }
@@ -113,14 +110,14 @@ export class UserService {
   async getUsers(role?: UserRole): Promise<User[]> {
     try {
       const params = role ? { role } : {}
-      const response = await httpClient.get<UserResponseDto[]>(this.basePath, { params })
+      const response = await userApi.getUsers(params)
       
       return UserMapper.toEntityList(response.data)
     } catch (error) {
       // API가 없는 경우 목업 데이터 반환
       console.warn('Users API not available, using mock data')
       
-      const mockUsers: UserResponseDto[] = [
+      const mockUsers: any[] = [ // Assuming UserResponseDto is not directly imported here, so using 'any' for now
         {
           id: 'nurse-1',
           name: '김간호사',
@@ -163,8 +160,8 @@ export class UserService {
    */
   async createUser(userData: CreateUserRequestDto): Promise<User> {
     try {
-      const response = await httpClient.post<UserResponseDto>(this.basePath, userData)
-      return UserMapper.toEntity(response.data)
+      const response = await userApi.createUser(userData)
+      return UserMapper.toEntity(response)
     } catch (error) {
       throw new Error('Failed to create user')
     }
@@ -175,8 +172,8 @@ export class UserService {
    */
   async updateUser(userId: string, userData: UpdateUserRequestDto): Promise<User> {
     try {
-      const response = await httpClient.put<UserResponseDto>(`${this.basePath}/${userId}`, userData)
-      return UserMapper.toEntity(response.data)
+      const response = await userApi.updateUser(userId, userData)
+      return UserMapper.toEntity(response)
     } catch (error) {
       throw new Error('Failed to update user')
     }
@@ -187,7 +184,7 @@ export class UserService {
    */
   async deleteUser(userId: string): Promise<void> {
     try {
-      await httpClient.delete(`${this.basePath}/${userId}`)
+      await userApi.deleteUser(userId)
     } catch (error) {
       throw new Error('Failed to delete user')
     }
@@ -198,7 +195,7 @@ export class UserService {
    */
   async changePassword(userId: string, currentPassword: string, newPassword: string): Promise<void> {
     try {
-      await httpClient.post(`${this.basePath}/${userId}/change-password`, {
+      await userApi.changePassword(userId, {
         current_password: currentPassword,
         new_password: newPassword
       })

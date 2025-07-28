@@ -11,7 +11,7 @@ import type {
 } from '../dto/PatientDto'
 
 /**
- * 환자 관련 API 호출 함수들
+ * 환자 관련 API 호출 함수들 (통합)
  */
 export const patientApi = {
   /**
@@ -100,13 +100,9 @@ export const patientApi = {
   }> {
     const response = await httpClient.get('/patients/stats', { params })
     return response.data
-  }
-}
+  },
 
-/**
- * 건강 기록 관련 API 호출 함수들
- */
-export const healthRecordApi = {
+  // 건강 기록 관련 API
   /**
    * 환자의 건강 기록 목록 조회 API
    * GET /patients/:id/health-records
@@ -180,13 +176,9 @@ export const healthRecordApi = {
   }> {
     const response = await httpClient.get(`/patients/${patientId}/health-records/stats`, { params })
     return response.data
-  }
-}
+  },
 
-/**
- * 상담 일정 관련 API 호출 함수들
- */
-export const consultationApi = {
+  // 상담 일정 관련 API
   /**
    * 상담 일정 목록 조회 API
    * GET /consultations

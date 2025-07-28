@@ -1,15 +1,11 @@
-import { httpClient } from '~/shared/infrastructure/api/httpClient'
 import { PatientMapper } from '../mappers/PatientMapper'
 import type { Patient, HealthRecord, ConsultationSchedule } from '../../domain/Patient'
 import type {
-  PatientResponseDto,
   CreatePatientRequestDto,
   UpdatePatientRequestDto,
-  HealthRecordResponseDto,
-  CreateHealthRecordRequestDto,
-  ConsultationScheduleResponseDto,
-  PaginatedResponseDto
+  CreateHealthRecordRequestDto
 } from '../../infrastructure/dto/PatientDto'
+import { patientApi } from '../../infrastructure/api/patientApi'
 
 export class PatientService {
   private readonly basePath = '/patients'
@@ -50,22 +46,19 @@ export class PatientService {
         ...(filters?.search && { search: filters.search })
       }
 
-      const response = await httpClient.get<PaginatedResponseDto<PatientResponseDto>>(
-        this.basePath, 
-        { params }
-      )
+      const response = await patientApi.getPatients(params)
 
       return {
-        patients: response.data.data.map((dto: PatientResponseDto) => PatientMapper.toEntity(dto)),
-        total: response.data.total,
-        page: response.data.page,
-        totalPages: response.data.total_pages
+        patients: response.data.map(dto => PatientMapper.toEntity(dto)),
+        total: response.total,
+        page: response.page,
+        totalPages: response.total_pages
       }
     } catch (error) {
       // API가 없는 경우 목업 데이터 반환
       console.warn('Patients API not available, using mock data')
       
-      const mockPatients: PatientResponseDto[] = [
+      const mockPatients: any[] = [
         {
           id: '1',
           name: '김환자',
@@ -141,13 +134,13 @@ export class PatientService {
    */
   async getPatient(patientId: string): Promise<Patient> {
     try {
-      const response = await httpClient.get<PatientResponseDto>(`${this.basePath}/${patientId}`)
-      return PatientMapper.toEntity(response.data)
+      const response = await patientApi.getPatient(patientId)
+      return PatientMapper.toEntity(response)
     } catch (error) {
       // API가 없는 경우 목업 데이터 반환
       console.warn('Patient API not available, using mock data')
       
-      const mockPatient: PatientResponseDto = {
+      const mockPatient: any = {
         id: patientId,
         name: '김환자',
         age: 65,
@@ -171,8 +164,8 @@ export class PatientService {
    */
   async createPatient(patientData: CreatePatientRequestDto): Promise<Patient> {
     try {
-      const response = await httpClient.post<PatientResponseDto>(this.basePath, patientData)
-      return PatientMapper.toEntity(response.data)
+      const response = await patientApi.createPatient(patientData)
+      return PatientMapper.toEntity(response)
     } catch (error) {
       throw new Error('Failed to create patient')
     }
@@ -183,11 +176,8 @@ export class PatientService {
    */
   async updatePatient(patientId: string, patientData: UpdatePatientRequestDto): Promise<Patient> {
     try {
-      const response = await httpClient.put<PatientResponseDto>(
-        `${this.basePath}/${patientId}`, 
-        patientData
-      )
-      return PatientMapper.toEntity(response.data)
+      const response = await patientApi.updatePatient(patientId, patientData)
+      return PatientMapper.toEntity(response)
     } catch (error) {
       throw new Error('Failed to update patient')
     }
@@ -198,7 +188,7 @@ export class PatientService {
    */
   async deletePatient(patientId: string): Promise<void> {
     try {
-      await httpClient.delete(`${this.basePath}/${patientId}`)
+      await patientApi.deletePatient(patientId)
     } catch (error) {
       throw new Error('Failed to delete patient')
     }
@@ -210,17 +200,14 @@ export class PatientService {
   async getPatientHealthRecords(patientId: string, limit?: number): Promise<HealthRecord[]> {
     try {
       const params = limit ? { limit } : {}
-      const response = await httpClient.get<HealthRecordResponseDto[]>(
-        `${this.basePath}/${patientId}/health-records`,
-        { params }
-      )
+      const response = await patientApi.getHealthRecords(patientId, params)
       
-      return response.data.map((dto: HealthRecordResponseDto) => PatientMapper.healthRecordToEntity(dto))
+      return response.map(dto => PatientMapper.healthRecordToEntity(dto))
     } catch (error) {
       // API가 없는 경우 목업 데이터 반환
       console.warn('Health records API not available, using mock data')
       
-      const mockHealthRecords: HealthRecordResponseDto[] = [
+      const mockHealthRecords: any[] = [
         {
           id: '1',
           patient_id: patientId,
@@ -267,11 +254,11 @@ export class PatientService {
    */
   async addHealthRecord(healthRecordData: CreateHealthRecordRequestDto): Promise<HealthRecord> {
     try {
-      const response = await httpClient.post<HealthRecordResponseDto>(
-        `/patients/${healthRecordData.patient_id}/health-records`,
+      const response = await patientApi.addHealthRecord(
+        healthRecordData.patient_id,
         healthRecordData
       )
-      return PatientMapper.healthRecordToEntity(response.data)
+      return PatientMapper.healthRecordToEntity(response)
     } catch (error) {
       throw new Error('Failed to add health record')
     }
@@ -288,8 +275,14 @@ export class PatientService {
   }> {
     try {
       const params = nurseId ? { nurse_id: nurseId } : {}
-      const response = await httpClient.get('/patients/stats', { params })
-      return response.data
+      const response = await patientApi.getPatientStats(params)
+      
+      return {
+        totalPatients: response.total_patients,
+        newPatientsThisMonth: response.new_patients_this_month,
+        averageAge: response.average_age,
+        genderDistribution: response.gender_distribution
+      }
     } catch (error) {
       // API가 없는 경우 목업 데이터 반환
       console.warn('Patient stats API not available, using mock data')
@@ -313,8 +306,8 @@ export class PatientService {
         ...(nurseId && { nurse_id: nurseId })
       }
       
-      const response = await httpClient.get<PatientResponseDto[]>(`${this.basePath}/search`, { params })
-      return response.data.map((dto: PatientResponseDto) => PatientMapper.toEntity(dto))
+      const response = await patientApi.searchPatients(params)
+      return response.map(dto => PatientMapper.toEntity(dto))
     } catch (error) {
       // getPatients 메서드의 검색 기능 활용
       const result = await this.getPatients({ search: query, nurseId })
